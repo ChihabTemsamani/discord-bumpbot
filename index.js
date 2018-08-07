@@ -70,8 +70,8 @@ fs.readFile('./config.json', async (err, data) => {
                     return;
                 };
                 await Database.Bumps.update({ notification: true }, { where: { botid: DBEntry.botid }});
-                if (bot.website) return channel.send(`${config.bumprole}, es kann nun für die Webseite ${bot.website} gebumpt werden. Jemand muss auf die Seite gehen, bumpen und anschließend \`${bot.bumpcommand}\` ausführen.`);
-                channel.send(`${config.bumprole}, <@${bot.botid}> kann nun gebumpt werden. Jemand muss \`${bot.bumpcommand}\` ausführen.`);
+                if (bot.website) return channel.send(`<@&${config.bumprole}>, es kann nun für die Webseite ${bot.website} gebumpt werden. Jemand muss auf die Seite gehen, bumpen und anschließend \`${bot.bumpcommand}\` ausführen.`);
+                channel.send(`<@&${config.bumprole}>, <@${bot.botid}> kann nun gebumpt werden. Jemand muss \`${bot.bumpcommand}\` ausführen.`);
             };
         }, 1000);
     });
