@@ -1,0 +1,36 @@
+<html>
+<head>
+<title>discord-bumpbot Assistent</title>
+<meta charset="utf8">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="form.css">
+</head>
+<body>
+<h1>Bot hinzufügen</h1><br><br>
+<h2>Bot</h2><br>
+<b>Nutzer-ID des Bots auf Discord:</b><br><input id="input_id" type="text" placeholder="ID des Bots"><br><br>
+<b>Intervall in Stunden und Minuten:</b><br><input id="input_interval_1" type="time"><br><br>
+<b>Bumpbefehl:</b><br><input id="input_bump_1" type="text" placeholder="Bumpbefehl"><br><br>
+<button onclick="bot()">Senden</button><br><br>
+<textarea id="bot_textarea" cols="100" placeholder="Hier kommt das Ergebnis, wenn du auf Senden drückst" readonly="true"></textarea>
+<br><br>
+<h2>Webseite</h2><br>
+<b>Link zur Webseite:</b><br><input id="input_website" type="text" placeholder="Link zur Webseite"><br><br>
+<b>Intervall in Stunden und Minuten:</b><br><input id="input_interval_2" type="time"><br><br>
+<b>Bumpbefehl:</b><br><input id="input_bump_2" type="text" placeholder="Bumpbefehl"><br><br>
+<b>Name der Seite (Bsp.: discord.me)</b><br><input id="input_name" type="text" placeholder="Name"><br><br>
+<button onclick="website()">Senden</button><br><br>
+<textarea id="web_textarea" cols="100" placeholder="Hier kommt das Ergebnis, wenn du auf Senden drückst" readonly="true"></textarea>
+
+<script>
+function bot() {
+    if (!document.getElementById("input_id").value || !document.getElementById("input_interval_1").value || !document.getElementById("input_bump_1").value) return document.getElementById('bot_textarea').value = "Bitte fülle alle benötigten Felder aus.";
+    document.getElementById('bot_textarea').value = `{ "botid":"${document.getElementById("input_id").value}","interval":{"hours":"${document.getElementById('input_interval_1').value.split(':')[0]}","minutes":"${document.getElementById('input_interval_1').value.split(':')[1]}","seconds":"0"},"bumpcommand":"${document.getElementById("input_bump_1").value}"}`;
+};
+function website() {
+    if (!document.getElementById("input_website").value || !document.getElementById("input_interval_2").value || !document.getElementById("input_bump_2").value) return document.getElementById('web_textarea').value = "Bitte fülle alle benötigten Felder aus.";
+    document.getElementById('web_textarea').value = `{ "botid":null,"website":"${document.getElementById("input_website").value} ","name":"${document.getElementById("input_name").value || null}","interval":{"hours":"${document.getElementById('input_interval_2').value.split(':')[0]}","minutes":"${document.getElementById('input_interval_2').value.split(':')[1]}","seconds":"0"},"bumpcommand":"${document.getElementById("input_bump_2").value}"}`;
+};
+</script>
+</body>
+</html>
