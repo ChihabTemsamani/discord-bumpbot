@@ -1,6 +1,6 @@
 {
   "name": "discord-bumpbot",
-  "version": "0.1.0",
+  "version": "0.6.0",
   "description": "Ein Bumpbot für Discord, welcher einem Benachrichtigungen gibt, wenn es Zeit ist, zu Bumpen.",
   "main": "index.js",
   "dependencies": {
