@@ -1,0 +1,31 @@
+{
+  "name": "discord-bumpbot",
+  "version": "0.1.0",
+  "description": "Ein Bumpbot für Discord, welcher einem Benachrichtigungen gibt, wenn es Zeit ist, zu Bumpen.",
+  "main": "index.js",
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "moment": "^2.22.2",
+    "sequelize": "^4.38.0",
+    "sqlite3": "^4.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Terax235/discord-bumpbot.git"
+  },
+  "keywords": [
+    "discord",
+    "bumpbot",
+    "discord-bot"
+  ],
+  "author": "Terax235",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Terax235/discord-bumpbot/issues"
+  },
+  "homepage": "https://github.com/Terax235/discord-bumpbot#readme"
+}

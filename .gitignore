@@ -59,3 +59,9 @@ typings/
 
 # next.js build output
 .next
+
+# JSON config file
+config.json
+
+# SQLite files
+*.sqlite
