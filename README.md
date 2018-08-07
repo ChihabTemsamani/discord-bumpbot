@@ -9,7 +9,7 @@ Das Ziel dieses Bots ist es, jedes mal, wenn für eine Liste gebumpt werden kann
 Die Voraussetzung dafür ist, dass du zumindest etwas von [Node.js](https://nodejs.org/) verstehst.
 Außerdem solltest du Node 8.0.0 oder höher auf deinem Gerät nutzen, sonst wird es nicht funktionieren.
 An sich läuft es so:
-1. Der Bot wird mit `git` geklont (`git clone https://github.com/Terax235/bumpbot.git`)
+1. Der Bot wird mit `git` geklont (`git clone https://github.com/Terax235/discord-bumpbot.git`)
 2. Führe im Ordner des Bots `npm install` aus, um die nötigen Packages zu installieren.
 3. Starte das erste Mal den Bot mit `node index.js`, um eine config.json zu generieren.
 4. Die config.json wird mit den benötigten Informationen ausgefüllt.
