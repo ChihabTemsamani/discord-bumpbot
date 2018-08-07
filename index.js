@@ -16,7 +16,7 @@ fs.readFile('./config.json', async (err, data) => {
         return process.exit(0);
     };
     config = require('./config.json');
-    if (!config.bumpbots || !config.bumpbots[0] || config.bumpbots.filter(bot => !bot.botid || !bot.interval || !bot.bumpcommand).length == config.bumpbots.length) {
+    if (!config.bumpbots || !config.bumpbots[0] || config.bumpbots.filter(bot => !bot.botid && !bot.website || !bot.interval || !bot.bumpcommand).length == config.bumpbots.length) {
         console.log("Der Bot wird nicht gestartet, weil kein einziger Bumpbot angegeben wurde.");
         return process.exit(1);
     };
@@ -53,6 +53,7 @@ fs.readFile('./config.json', async (err, data) => {
         };
         console.log(`${valid.length} von ${config.bumpbots.length} Bots funktionieren.`);
         for (var bot of valid) {
+            if (bot.website) bot.botid = bot.website;
             const DBEntry = await Database.Bumps.findOne({ where: { botid: bot.botid }});
             if (!DBEntry) {
                 let momentdate = moment().add(bot.interval.hours || 0, 'hours').add(bot.interval.minutes || 0, 'minutes').add(bot.interval.seconds || 0, 'seconds');
@@ -79,7 +80,48 @@ fs.readFile('./config.json', async (err, data) => {
         if (!message.guild) return;
         if (message.guild.id != guild.id) return;
         if (message.channel.id != channel.id) return;
+        if (message.content.toLowerCase().startsWith('!addbot')) {
+            if (!message.member.roles.has(config.bumprole)) return message.channel.send("Du besitzt nicht die Bumprolle.");
+            let args = message.content.split(' ').slice(1);
+            if (!args[0]) return message.channel.send(`${message.author}, um neue Bots hinzuzufügen, besuche doch <https://terax235.github.io/discord-bumpbot/assistant>.`);
+            try {
+                let parsed = JSON.parse(args.join(' '));
+                if (parsed.website) {
+                    if (!parsed.interval || !parsed.interval.hours && !parsed.interval.minutes || !parsed.bumpcommand) return message.channel.send("Das Objekt enthält falsche Werte.");
+                    const Data = valid.filter(en => en.botid == parsed.website)[0];
+                    if (Data) return message.channel.send("Die Seite existiert bereits.");
+                    parsed.botid = parsed.website;
+                    valid.push(parsed);
+                    let config = JSON.parse(fs.readFileSync('./config.json'));
+                    config.bumpbots.push(parsed);
+                    fs.writeFileSync('./config.json', JSON.stringify(config));
+                    let momentdate = moment().add(parsed.interval.hours || 0, 'hours').add(parsed.interval.minutes || 0, 'minutes').add(parsed.interval.seconds || 0, 'seconds');
+                    let date = new Date(momentdate).getTime();
+                    await Database.Bumps.create({ botid: parsed.website, nextbump: date, notification: false });
+                    console.log(`Webseite ${parsed.website} wurde hinzugefügt.`);
+                    return message.channel.send("Die Seite wurde erfolgreich hinzugefügt.");
+                } else {
+                    if (!parsed.botid) return message.channel.send("Das Objekt enthält falsche Werte.");
+                    if (!guild.members.get(parsed.botid)) return message.channel.send("Der Bot wurde auf diesem Server nicht gefunden.");
+                    if (!parsed.interval || !parsed.interval.hours && !parsed.interval.minutes || !parsed.bumpcommand) return message.channel.send("Das Objekt enthält falsche Werte.");
+                    const Data = valid.filter(en => en.botid == parsed.botid)[0];
+                    if (Data) return message.channel.send("Der Bot existiert bereits.");
+                    valid.push(parsed);
+                    let config = JSON.parse(fs.readFileSync('./config.json'));
+                    config.bumpbots.push(parsed);
+                    fs.writeFileSync('./config.json', JSON.stringify(config));
+                    let momentdate = moment().add(parsed.interval.hours || 0, 'hours').add(parsed.interval.minutes || 0, 'minutes').add(parsed.interval.seconds || 0, 'seconds');
+                    let date = new Date(momentdate).getTime();
+                    await Database.Bumps.create({ botid: parsed.botid, nextbump: date, notification: false });
+                    console.log(`Bot ${client.users.get(parsed.id).tag} wurde hinzugefügt.`);
+                    return message.channel.send("Der Bot wurde erfolgreich hinzugefügt.");
+                };
+            } catch (err) {
+                return message.channel.send("Bitte generiere eine richtiges Objekt mit <https://terax235.github.io/discord-bumpbot/assistant>.");
+            };
+        };
         if (!valid.filter(v => message.content.toLowerCase().startsWith(v.bumpcommand.toLowerCase()))[0]) return;
+        if (!message.member.roles.has(config.bumprole)) return message.channel.send("Du besitzt nicht die Bumprolle.");
         let bot = valid.filter(v => message.content.toLowerCase().startsWith(v.bumpcommand.toLowerCase()))[0];
         const DBEntry = await Database.Bumps.findOne({ where: { botid: bot.botid }});
         if (!DBEntry.notification) return message.channel.send(`Der Bot / die Seite muss noch nicht gebumpt werden.`);
