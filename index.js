@@ -10,7 +10,7 @@ let guild, channel, valid;
 
 fs.readFile('./config.json', async (err, data) => {
     if (err) {
-        let example = { "bot_token" : "", "guild" : "", "bumpchannel" : "", "bumprole" : "", "bumpbots" : [{ "botid" : "", "interval" : { "hours" : "", "minutes" : "", "seconds" : "" }, "bumpcommand" : "", "website" : null }]};
+        let example = { "bot_token" : "", "prefix" : null, "guild" : "", "bumpchannel" : "", "bumprole" : "", "bumpbots" : []};
         await fs.writeFileSync('./config.json', JSON.stringify(example));
         console.log("Der Bot wurde zum ersten mal gestartet. Bitte fülle die generierte config.json aus und starte den Bot anschließend neu.");
         return process.exit(0);
@@ -31,6 +31,12 @@ fs.readFile('./config.json', async (err, data) => {
     
     client.on('ready', async () => {
         console.log("Der Bumpbot wurde als " + client.user.tag + " eingeloggt.");
+        let game = `${config.prefix}info`;
+        if (!config.prefix) {
+            config.prefix = `${client.user} `;
+            game = `@${client.user.username} info`;
+        };
+        client.user.setActivity(game, { type: 'PLAYING' });
         guild = client.guilds.get(config.guild);
         if (!guild) {
             console.log("Fehler: Der Server, der in der config.json angegeben wurde, wurde nicht gefunden. Bitte füge den Bot auf den Server hinzu.");
@@ -80,7 +86,7 @@ fs.readFile('./config.json', async (err, data) => {
         if (!message.guild) return;
         if (message.guild.id != guild.id) return;
         if (message.channel.id != channel.id) return;
-        if (message.content.toLowerCase().startsWith('!addbot')) {
+        if (message.content.toLowerCase().startsWith(config.prefix + 'addbot')) {
             if (!message.member.roles.has(config.bumprole)) return message.channel.send("Du besitzt nicht die Bumprolle.");
             let args = message.content.split(' ').slice(1);
             if (!args[0]) return message.channel.send(`${message.author}, um neue Bots hinzuzufügen, besuche doch <https://terax235.github.io/discord-bumpbot/assistant>.`);
@@ -119,6 +125,13 @@ fs.readFile('./config.json', async (err, data) => {
             } catch (err) {
                 return message.channel.send("Bitte generiere eine richtiges Objekt mit <https://terax235.github.io/discord-bumpbot/assistant>.");
             };
+        };
+        if (message.content.startsWith(config.prefix + 'info')) {
+            const embed = new Discord.RichEmbed()
+            .setTitle(`Über ${client.user.username}`)
+            .setDescription(`${client.user.username} erinnert Leute daran, wenn es an der Zeit ist, zu Bumpen. Den Bot kann man sogar selber hosten, siehe [den offizielen Source-Code](https://github.com/Terax235/discord-bumpbot).`)
+            .setFooter(`Programmiert von Terax235. Version ${require('./package.json').version}`);
+            message.channel.send(embed);
         };
         if (!valid.filter(v => message.content.toLowerCase().startsWith(v.bumpcommand.toLowerCase()))[0]) return;
         if (!message.member.roles.has(config.bumprole)) return message.channel.send("Du besitzt nicht die Bumprolle.");
