@@ -1,14 +1,11 @@
 # discord-bumpbot
-Ein Bumpbot, welcher einem Benachrichtigungen gibt, wenn es Zeit ist, zu Bumpen.
 
-## Wichtige Info:
-Das Projekt wird aktuell erneuert, um einige Funktionen möglich zu machen und damit der Code etwas hübscher ist.
+discord-bumpbot is a Discord bot that remembers you if it's time to bump your Discord server.
 
-Hier ist eine Liste an Dingen, die mit der neuen Version erscheinen werden:
-- Ein Konfigurationsassistent, um das Setup des Bots deutlich zu vereinfachen.
-- Die Möglichkeit, zu sehen, wann der nächste Bump für einen Bot stattfinden wird.
-- Das Bumpen abbrechen, wenn ein Bot nicht online ist.
+## Rewrite
+The bot was written in german. Currently there's a rewrite ongoing, which will make it multilingual (german and english).
+You should not use it until everything is done.
 
-**Auf der [Issues-Seite](https://github.com/Terax235/discord-bumpbot/issues) können gerne noch weitere Ideen gepostet werden!**
-
-Bis der Rewrite fertig ist, wird noch einige Zeit vergehen. Bis dahin kann man, wenn man Erfahrung mit Node.js hat, den aktuellen Source Code nehmen.
+## Contributing
+- Translator: You can apply as a translator if you want. Just tell me in what language you can translate (contact me at my [Discord server](https://discord.gg/fCWumjH))
+- Developer: ~~If you have experience with [Node.js](https://nodejs.org/) and [discord.js](https://discord.js.org/), feel free to contribute to this project.~~ **Currently I'm not accepting contributions since I want to publish the new source code first.**
