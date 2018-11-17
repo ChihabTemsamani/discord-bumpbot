@@ -31,11 +31,13 @@ prompt([
             validate: async function (input) {
                 var done = this.async();
                 try {
+                    console.log("\nLogin wird versucht...");
                     await client.login(input);
                 } catch (err) {
                     console.log('Ungültiger Token.');
                     process.exit(1);
                 };
+                console.log("Login erfolgreich!");
                 await done(null, true);
             },
         },
@@ -136,7 +138,7 @@ prompt([
         answers.bumprole = answers.bumprole.split('(')[answers.bumprole.split('(').length-1].split(')')[0];
         answers.bumpchannel = answers.bumpchannel.split('(')[answers.bumpchannel.split('(').length-1].split(')')[0];
         let final = await merge_objects(answers1, answers);
-        fs.writeFileSync('./config.json', JSON.stringify(final));
+        await fs.writeFileSync('./config.json', JSON.stringify(final));
         config = final;
         console.log("Die Konfiguration wurde gespeichert. Du kannst sie jederzeit mit diesem Skript ändern.");
     }).then(async () => {
@@ -147,7 +149,8 @@ prompt([
                 message: 'Möchtest du einen (weiteren) Bot oder eine (weitere) Seite hinzufügen? (y/n)',
                 prefix: '',
             }]).then(async answers => {
-                let conf = require('./config.json');
+                let conf = await fs.readFileSync("./config.json", { encoding: "utf8" });
+                conf = JSON.parse(conf);
                 if (!conf.bumpbots) conf.bumpbots = [];
                 if (answers.next.toLowerCase() != 'y') {
                     fs.writeFileSync('./config.json', JSON.stringify(conf));
@@ -174,7 +177,7 @@ prompt([
                         prefix: '-',
                         choices: async function() {
                             await client.guilds.get(answers1.guild).fetchMembers();
-                            let bots = client.guilds.get(answers1.guild).members.filter(m => m.user.bot);
+                            let bots = client.guilds.get(answers1.guild).members.filter(m => m.user.bot).filter(m => m.id != client.user.id);
                             if (!bots.first()) {
                                 console.log("Auf dem Server ist kein Bot. Bitte füge Bumpbots hinzu.");
                                 return process.exit(1);
