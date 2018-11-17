@@ -1,13 +1,14 @@
 {
   "name": "discord-bumpbot",
-  "version": "0.6.0",
+  "version": "1.0.0",
   "description": "Ein Bumpbot für Discord, welcher einem Benachrichtigungen gibt, wenn es Zeit ist, zu Bumpen.",
   "main": "index.js",
   "dependencies": {
-    "discord.js": "^11.3.2",
+    "discord.js": "^11.4.2",
+    "inquirer": "^6.2.0",
     "moment": "^2.22.2",
-    "sequelize": "^4.38.0",
-    "sqlite3": "^4.0.2"
+    "sequelize": "^4.41.2",
+    "sqlite3": "^4.0.4"
   },
   "devDependencies": {},
   "scripts": {
@@ -19,7 +20,8 @@
   },
   "keywords": [
     "discord",
-    "bumpbot",
+    "german",
+    "discord-bumpbot",
     "discord-bot"
   ],
   "author": "Terax235",

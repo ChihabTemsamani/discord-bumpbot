@@ -14,7 +14,7 @@ const DB = new Sequelize({
 let str = Sequelize.STRING(300);
 let bol = Sequelize.BOOLEAN;
 
-const Bumps = DB.define('bumps', { botid: str, nextbump: str, notification: bol });
+const Bumps = DB.define('bumps', { botid: str, nextbump: str, notification: str });
 
 class Database {
     constructor() {
